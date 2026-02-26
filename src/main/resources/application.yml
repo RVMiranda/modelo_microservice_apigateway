@@ -1,0 +1,25 @@
+server:
+  port: 8080 # El gateway escuchará aquí
+
+spring:
+  application:
+    name: apigateway
+  cloud:
+    gateway:
+      routes:
+        # Ruta para productos
+        - id: product-route
+          uri: lb://PRODUCTSERVICE # lb:// significa Load Balancer (Eureka)
+          predicates:
+            - Path=/products/**
+
+        # Ruta para cupones
+        - id: coupon-route
+          uri: lb://COUPONSERVICE
+          predicates:
+            - Path=/coupons/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/
